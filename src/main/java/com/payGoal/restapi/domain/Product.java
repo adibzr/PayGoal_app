@@ -13,6 +13,6 @@ public class Product {
     private Long id;
     private String nombre;
     private String description;
-    private float precio;
-    private int cantidad;
+    private Double precio;
+    private Integer cantidad;
 }

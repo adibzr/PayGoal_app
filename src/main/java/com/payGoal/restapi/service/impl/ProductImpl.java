@@ -18,14 +18,29 @@ public class ProductImpl implements ProductService {
 
     @Override
     public Product create(final Product product) {
-
-        return productRepository.save(product);
+        final ProductEntity productEntity = productToProductEnetity(product);
+        final ProductEntity savedProductEntity = productRepository.save(productEntity);
+        return ProductEnetityToProduct(savedProductEntity);
     }
-    private Product ProductEntityToProduct(ProductEntity productEntity){
+   
+    private ProductEntity productToProductEnetity(Product product){
         return ProductEntity.builder()
-                .isbn(productEntity.getIsbn())
-                .title(productEntity.getTitle())
-                .author(productEntity.getAuthor())
-                .build();
+        .id(product.getId())
+        .nombre(product.getNombre())
+        .description(product.getDescription())
+        .precio(product.getPrecio())
+        .cantidad(product.getCantidad())
+        .build();
+
+    }
+    private Product ProductEnetityToProduct( ProductEntity productEntity){
+        return Product.builder()
+        .id(productEntity.getId())
+        .nombre(productEntity.getNombre())
+        .description(productEntity.getDescription())
+        .precio(productEntity.getPrecio())
+        .cantidad(productEntity.getCantidad())
+        .build();
+
     }
 }
