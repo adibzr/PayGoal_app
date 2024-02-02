@@ -23,21 +23,24 @@ public class ProductImpl implements ProductService {
         return ProductEnetityToProduct(savedProductEntity);
     }
    
+    // Contrulle una entidad del producto a partir de un producto
     private ProductEntity productToProductEnetity(Product product){
         return ProductEntity.builder()
         .id(product.getId())
         .nombre(product.getNombre())
-        .description(product.getDescription())
+        .descripcion(product.getDescripcion())
         .precio(product.getPrecio())
         .cantidad(product.getCantidad())
         .build();
 
     }
+
+    // Construlle un producto a partir de una entidad de producto
     private Product ProductEnetityToProduct( ProductEntity productEntity){
         return Product.builder()
         .id(productEntity.getId())
         .nombre(productEntity.getNombre())
-        .description(productEntity.getDescription())
+        .descripcion(productEntity.getDescripcion())
         .precio(productEntity.getPrecio())
         .cantidad(productEntity.getCantidad())
         .build();

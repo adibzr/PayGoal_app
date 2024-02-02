@@ -3,6 +3,8 @@ package com.payGoal.restapi.services.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static com.payGoal.restapi.TestData.testProduct;
+import static com.payGoal.restapi.TestData.testProductEntity;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +17,6 @@ import com.payGoal.restapi.domain.ProductEntity;
 import com.payGoal.restapi.repositories.ProductRepository;
 import com.payGoal.restapi.service.impl.ProductImpl;
 
-
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceImplTest {
 @Mock
@@ -25,19 +26,9 @@ public class ProductServiceImplTest {
 
     @Test
     public void testProductSave(){
-        final Product product = Product.builder()
-        .nombre("producto")
-        .description("descripcion cualquiera")
-        .precio(123.2)
-        .cantidad(5)
-        .build();
+        final Product product = testProduct();
 
-        final ProductEntity productEntity = ProductEntity.builder()
-        .nombre("producto")
-        .description("descripcion cualquiera")
-        .precio(123.2)
-        .cantidad(5)
-        .build();
+        final ProductEntity productEntity = testProductEntity();
         
         when(productRepository.save(eq(productEntity))).thenReturn(productEntity);
         

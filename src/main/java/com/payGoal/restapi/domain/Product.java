@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Product {
-    private Long id;
+    private Integer id;
     private String nombre;
-    private String description;
+    private String descripcion;
     private Double precio;
     private Integer cantidad;
 }
