@@ -1,8 +1,11 @@
 package com.payGoal.restapi.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,5 +28,14 @@ public class ProductController {
         final Product savedProduct = productService.create(product);
         final ResponseEntity<Product>  response = new ResponseEntity<Product>(savedProduct, HttpStatus.CREATED);
         return response;
+    }
+    
+
+    @GetMapping(path = "/product/{id}")
+    public ResponseEntity<Product> retrieveBook(@PathVariable final Integer id) {
+        final Optional<Product> foundBook = productService.findByID(id);
+        return foundBook
+            .map(book -> new ResponseEntity<Product>(book, HttpStatus.OK))
+            .orElse(new ResponseEntity<Product>(HttpStatus.NOT_FOUND));
     }
 }

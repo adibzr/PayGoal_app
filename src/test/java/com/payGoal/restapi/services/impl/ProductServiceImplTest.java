@@ -3,6 +3,9 @@ package com.payGoal.restapi.services.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
 import static com.payGoal.restapi.TestData.testProduct;
 import static com.payGoal.restapi.TestData.testProductEntity;
 
@@ -19,9 +22,9 @@ import com.payGoal.restapi.service.impl.ProductImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceImplTest {
-@Mock
+    @Mock
     private ProductRepository productRepository;
-@InjectMocks
+    @InjectMocks
     private ProductImpl productTest;
 
     @Test
@@ -38,5 +41,22 @@ public class ProductServiceImplTest {
         
     }
 
+    @Test
+    public void testFindByIdNotFound (){
+        final Integer id = 1234;
+        when(productRepository.findById(eq(id))).thenReturn(Optional.empty());
+        final Optional<Product> result = productTest.findByID(id);
+        assertEquals(Optional.empty(), result);
+    }
+    
+    @Test
+    public void testFindByIdFound (){
+        final Product product = testProduct();
+        final ProductEntity productEntity = testProductEntity();
+
+        when(productRepository.findById(eq(product.getId()))).thenReturn(Optional.of(productEntity));
+        final Optional<Product> result = productTest.findByID(product.getId());
+        assertEquals(Optional.of(product), result);
+    }
 
 }

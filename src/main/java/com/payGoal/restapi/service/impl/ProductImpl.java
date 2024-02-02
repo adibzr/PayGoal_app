@@ -1,6 +1,9 @@
 package com.payGoal.restapi.service.impl;
 import com.payGoal.restapi.domain.ProductEntity;
 import com.payGoal.restapi.repositories.ProductRepository;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.payGoal.restapi.domain.Product;
@@ -18,13 +21,13 @@ public class ProductImpl implements ProductService {
 
     @Override
     public Product create(final Product product) {
-        final ProductEntity productEntity = productToProductEnetity(product);
+        final ProductEntity productEntity = productToProductEntity(product);
         final ProductEntity savedProductEntity = productRepository.save(productEntity);
-        return ProductEnetityToProduct(savedProductEntity);
+        return productEnetityToProduct(savedProductEntity);
     }
    
     // Contrulle una entidad del producto a partir de un producto
-    private ProductEntity productToProductEnetity(Product product){
+    private ProductEntity productToProductEntity(Product product){
         return ProductEntity.builder()
         .id(product.getId())
         .nombre(product.getNombre())
@@ -36,7 +39,7 @@ public class ProductImpl implements ProductService {
     }
 
     // Construlle un producto a partir de una entidad de producto
-    private Product ProductEnetityToProduct( ProductEntity productEntity){
+    private Product productEnetityToProduct( ProductEntity productEntity){
         return Product.builder()
         .id(productEntity.getId())
         .nombre(productEntity.getNombre())
@@ -45,5 +48,11 @@ public class ProductImpl implements ProductService {
         .cantidad(productEntity.getCantidad())
         .build();
 
+    }
+    //Encuentra producto por id o devuelve vacio
+    @Override
+    public Optional<Product> findByID(Integer id) {
+        final Optional<ProductEntity> foundProductById = productRepository.findById(id);
+        return foundProductById.map(product -> productEnetityToProduct(product));
     }
 }
