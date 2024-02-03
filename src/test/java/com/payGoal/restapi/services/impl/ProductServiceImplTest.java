@@ -1,13 +1,15 @@
 package com.payGoal.restapi.services.impl;
 
+import static com.payGoal.restapi.TestData.testProduct;
+import static com.payGoal.restapi.TestData.testProductEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-
-import static com.payGoal.restapi.TestData.testProduct;
-import static com.payGoal.restapi.TestData.testProductEntity;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +37,7 @@ public class ProductServiceImplTest {
         
         when(productRepository.save(eq(productEntity))).thenReturn(productEntity);
         
-        final Product result = productTest.create(product);
+        final Product result = productTest.save(product);
 
         assertEquals(product, result);
         
@@ -57,6 +59,35 @@ public class ProductServiceImplTest {
         when(productRepository.findById(eq(product.getId()))).thenReturn(Optional.of(productEntity));
         final Optional<Product> result = productTest.findByID(product.getId());
         assertEquals(Optional.of(product), result);
+    }
+
+    @Test
+    public void testEmptyWithNoProducts(){
+        when(productRepository.findAll()).thenReturn(new ArrayList<ProductEntity>());
+        final List<Product> restult = productTest.productList();
+        assertEquals(0, restult.size());
+    }
+
+    @Test
+    public void testProductListReturnNotEmpty(){
+        final ProductEntity productEntity = testProductEntity();
+        when(productRepository.findAll()).thenReturn(List.of(productEntity));
+        final List<Product> restult = productTest.productList();
+        assertEquals(1, restult.size());
+    }
+
+    @Test
+    public void testReturnFalsewhenProdNotExist(){
+        when(productRepository.existsById(any())).thenReturn(false);
+        final boolean result = productTest.isProductExist(testProduct());
+        assertEquals(false, result);
+    }
+    
+    @Test
+    public void testReturnTruewhenProdExist(){
+        when(productRepository.existsById(any())).thenReturn(true);
+        final boolean result = productTest.isProductExist(testProduct());
+        assertEquals(true, result);
     }
 
 }

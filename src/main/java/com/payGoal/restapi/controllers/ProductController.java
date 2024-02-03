@@ -1,6 +1,7 @@
 package com.payGoal.restapi.controllers;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,11 +24,15 @@ public class ProductController {
         this.productService = productService;
     }
     @PutMapping("product/{id}")
-    public ResponseEntity<Product> createProduct(@PathVariable final Integer id, @RequestBody final Product product){
+    public ResponseEntity<Product> createUpdateProduct(@PathVariable final Integer id, @RequestBody final Product product){
         product.setId((id));
-        final Product savedProduct = productService.create(product);
-        final ResponseEntity<Product>  response = new ResponseEntity<Product>(savedProduct, HttpStatus.CREATED);
-        return response;
+        final Product savedProduct = productService.save(product);
+        final boolean isProductExist = productService.isProductExist(product);
+        if (isProductExist) {
+            return new ResponseEntity<Product>(savedProduct, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<Product>(savedProduct, HttpStatus.CREATED);
+        }
     }
     
 
@@ -38,4 +43,11 @@ public class ProductController {
             .map(book -> new ResponseEntity<Product>(book, HttpStatus.OK))
             .orElse(new ResponseEntity<Product>(HttpStatus.NOT_FOUND));
     }
+    
+    @GetMapping(path = "/product")
+    public ResponseEntity<List<Product>> listProducts() {
+        return new ResponseEntity<List<Product>>(productService.productList(), HttpStatus.OK);        
+    }
+
+    
 }

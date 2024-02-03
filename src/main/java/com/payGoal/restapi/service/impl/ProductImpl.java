@@ -2,7 +2,9 @@ package com.payGoal.restapi.service.impl;
 import com.payGoal.restapi.domain.ProductEntity;
 import com.payGoal.restapi.repositories.ProductRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,7 @@ public class ProductImpl implements ProductService {
     }
 
     @Override
-    public Product create(final Product product) {
+    public Product save(final Product product) {
         final ProductEntity productEntity = productToProductEntity(product);
         final ProductEntity savedProductEntity = productRepository.save(productEntity);
         return productEnetityToProduct(savedProductEntity);
@@ -55,4 +57,17 @@ public class ProductImpl implements ProductService {
         final Optional<ProductEntity> foundProductById = productRepository.findById(id);
         return foundProductById.map(product -> productEnetityToProduct(product));
     }
+
+    @Override
+    public List<Product> productList() {
+        final List<ProductEntity> foundProducts = productRepository.findAll();
+        return foundProducts.stream().map(product -> productEnetityToProduct(product)).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isProductExist(Product product) {
+        return productRepository.existsById(product.getId());   
+}
+
+    
 }
