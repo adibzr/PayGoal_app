@@ -122,4 +122,12 @@ public class ProductContollerIT {
         .andExpect(MockMvcResultMatchers.jsonPath("$.cantidad").value(product.getCantidad()))
         .andExpect(MockMvcResultMatchers.jsonPath("$.precio").value(product.getPrecio()));
     }
+
+    @Test
+    public void testHttp204ProductNotExist() throws Exception{
+        final Product product = TestData.testProduct();
+        productService.save(product);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/product/" + product.getId()))
+        .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
 }

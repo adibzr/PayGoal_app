@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,5 +50,9 @@ public class ProductController {
         return new ResponseEntity<List<Product>>(productService.productList(), HttpStatus.OK);        
     }
 
-    
+    @DeleteMapping(path = "/product/{id}")
+    public ResponseEntity deleteProduct(@PathVariable final Integer id){
+        productService.deleteProductById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

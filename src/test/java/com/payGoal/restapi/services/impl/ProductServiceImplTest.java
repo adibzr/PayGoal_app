@@ -5,6 +5,8 @@ import static com.payGoal.restapi.TestData.testProductEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -90,4 +92,10 @@ public class ProductServiceImplTest {
         assertEquals(true, result);
     }
 
+    @Test
+    public void testDeleteProductIsCalled(){
+        final Integer id = 123;
+        productTest.deleteProductById(id);
+        verify(productRepository, times(1)).deleteById((eq(id)));
+    }
 }

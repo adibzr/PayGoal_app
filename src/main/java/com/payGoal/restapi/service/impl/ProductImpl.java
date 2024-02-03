@@ -69,5 +69,10 @@ public class ProductImpl implements ProductService {
         return productRepository.existsById(product.getId());   
 }
 
+    @Override
+    public void deleteProductById(Integer id) {
+        productRepository.deleteById(id);
+    }
+
     
 }

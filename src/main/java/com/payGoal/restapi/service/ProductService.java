@@ -13,4 +13,6 @@ public interface ProductService {
     List<Product> productList();
 
     boolean isProductExist(Product product);
+
+    void deleteProductById(Integer id);
 }
